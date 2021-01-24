@@ -1,0 +1,37 @@
+{
+  "name": "json-db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev-webpack": "npx webpack --config webpack-config/dev.js --watch &",
+    "dev-nodemon": "npx nodemon dist/backend.js &",
+    "dev": "npx concurrently -r \"npm:dev-webpack\" \"npm:dev-nodemon\"",
+    "prod": "npx webpack --config webpack-config/prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theajack/json-db.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theajack/json-db/issues"
+  },
+  "homepage": "https://github.com/theajack/json-db#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.2",
+    "concurrently": "^5.3.0",
+    "eslint": "^7.18.0",
+    "eslint-loader": "^4.0.2",
+    "express": "^4.17.1",
+    "lowdb": "^1.0.0",
+    "nodemon": "^2.0.7",
+    "webpack": "^5.17.0",
+    "webpack-cli": "^4.4.0"
+  }
+}
