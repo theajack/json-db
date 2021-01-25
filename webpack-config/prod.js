@@ -13,7 +13,7 @@ fs.readdirSync('node_modules')
 module.exports = {
     mode: 'production',
     entry: [
-        path.resolve('./', 'src/server.js')
+        path.resolve('./', 'src/server.ts')
     ],
     output: {
         filename: 'bundle.js',
@@ -29,8 +29,16 @@ module.exports = {
         __filename: false,
         __dirname: false
     },
+    resolve: {
+        extensions: [ '.ts', '.js' ]
+    },
     module: {
         rules: [{
+            test: /(.ts)$/,
+            use: {
+                loader: 'ts-loader'
+            }
+        }, {
             test: /(.js)$/,
             use: [{
                 loader: 'babel-loader',

@@ -1,1 +1,0 @@
-exports.id=179,exports.ids=null,exports.modules={4814:(s,t,e)=>{"use strict";var n=e(5178);const o=e.n(n)()();o.get("/",((s,t)=>{t.send("Hello!!")}));const d=o.listen(3e3,(function(){const s=d.address().address,t=d.address().port;console.log("Server is listening at http://%s:%s",s,t)}))}},exports.runtime=function(s){"use strict";s.h=()=>"3dc87bfdfcba8d8adf80"};
