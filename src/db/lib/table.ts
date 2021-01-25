@@ -9,8 +9,16 @@ import {IGetOption} from 'src/types/table';
 export class Table {
     private db: Lowdb.LowdbSync<ITable>;
     private id: number;
-    constructor (name: string) {
-        this.db = initTable(name);
+    type: string;
+    name: string;
+    constructor (type: string, name: string) {
+        this.type = type;
+        this.name = name;
+        const result = initTable(type, name);
+        if (result === null) {
+            return;
+        }
+        this.db = result;
         this.initIndex();
     }
 

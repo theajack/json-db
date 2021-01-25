@@ -17,7 +17,7 @@ module.exports = {
     ],
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve('./', 'dist')
     },
     /* 告知 webpack 为 node 服务，并忽略 externals 中的模块 */
     target: 'node',

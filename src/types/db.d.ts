@@ -1,6 +1,10 @@
+
+
 export interface ITables {
     [prop: string]: {
-        file: string;
+        [prop: string]: {
+            file: string;
+        }
     }
 }
 

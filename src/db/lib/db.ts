@@ -5,10 +5,13 @@ import {tables} from './tables';
 import {nowDateTime} from './utils/time';
 
 
-export function initTable (name: string) {
-    if (!tables[name]) {throw new Error(`不存在的表：${name}`);}
-    const table = tables[name];
-    const adapter = new FileSync<ITable>(table.file);
+export function initTable (type: string, name: string) {
+    if (!tables[type] || !tables[type][name]) {
+        console.log(`不存在的表：${name}`);
+        return null;
+    }
+    const tableConfig = tables[type][name];
+    const adapter = new FileSync<ITable>(tableConfig.file);
     const db = low(adapter);
     db.defaults(writeDefaultJson(name))
         .write();

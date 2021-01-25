@@ -1,12 +1,18 @@
 import {ITables} from 'src/types/db';
 
-export const TABLE_NAME = {
+export const TABLE_TYPE_NAME = {
     COMMENT: 'comment'
+};
+export const TABLE_NAME = {
+    CNCHAR: 'cnchar'
 };
 
 export const tables: ITables = {
     comment: {
-        file: 'src/db/comment/comment.json'
+        cnchar: {
+            file: 'src/db/comment/cnchar.json'
+        }
     }
 };
+
 
