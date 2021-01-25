@@ -72,7 +72,7 @@ export class Table {
     }: IGetOption) {
         let chain = this.getDateChain();
         if (typeof condition === 'object') {
-            return chain.find(condition).value();
+            return chain.filter(condition).value();
         }
         if (all) {
             return chain.value();
