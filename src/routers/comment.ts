@@ -1,30 +1,59 @@
 
 import {getTable} from '../db/lib/table-pool';
-import {nowDateTimeStr} from '../db/lib/utils/time';
+// import {nowDateTimeStr} from '../db/lib/utils/time';
 import {parseJSON} from '../db/lib/utils/util';
 import {IGetOption} from '../types/table';
 import {Express} from 'express';
-import {TABLE_NAME, TABLE_TYPE_NAME} from '../db/lib/tables';
+import {TABLE_TYPE_NAME} from '../db/lib/tables';
+import {buildRep, checkAttr} from '../db/lib/utils/request';
 
-export function initCommentRouter (app: Express) {
-    const table = getTable(TABLE_TYPE_NAME.COMMENT, TABLE_NAME.CNCHAR);
-    if (table === null) {return;}
+// axios({
 
-    app.get('/', (req, res) => {
-        res.send('Hello!!!!' + JSON.stringify(table.get({all: true})));
-    });
-    app.get('/insert', (req, res) => {
-        table.insert({content: '11'});
-        res.send(table.get({all: true}));
-    });
-    app.get('/update', (req, res) => {
-        table.update({
-            condition: {id: 1},
-            value: {content: nowDateTimeStr()},
+//     method: 'post',
+    
+//     url: '/api/comment/cnchar/insert',
+//     responseType: 'json',
+//     data: {
+//         name: 'string',
+//         contact: 'string',
+//         content: 'string'
+//     }}).then(
+//     res => {console.log(res);}
+// );
+
+export function initCommentRouter (app: Express, name: string) {
+    const table = getTable(TABLE_TYPE_NAME.COMMENT, name);
+    if (table === null) {
+        return;
+    }
+    // app.get(`/comment/${name}`, (req, res) => {
+    //     res.send('Hello!!!' + JSON.stringify(table.get({all: true})));
+    // });
+    app.post(`/comment/${name}/insert`, (req, res) => {
+        const data = req.body;
+        const checkRes = checkAttr(data, {
+            name: 'string',
+            contact: 'string',
+            content: 'string'
         });
-        res.send(table.get({all: true}));
+        if (checkRes.length > 0) {
+            res.send(buildRep({
+                mes: checkRes.join(',') + ' 参数类型错误',
+                code: -1
+            }));
+            return;
+        }
+        table.insert(data);
+        res.send(buildRep({}));
     });
-    app.get('/get', (req, res) => {
+    // app.get(`/comment/${name}/update`, (req, res) => {
+    //     table.update({
+    //         condition: {id: 1},
+    //         value: {content: nowDateTimeStr()},
+    //     });
+    //     res.send(table.get({all: true}));
+    // });
+    app.get(`/comment/${name}`, (req, res) => {
         const query = req.query;
         const options: IGetOption = {};
         if (query.all) { options.all = query.all === '1'; }
@@ -35,14 +64,7 @@ export function initCommentRouter (app: Express) {
         if (query.condition) {
             options.condition = parseJSON(query.condition);
         }
-        const result = table.get(options);
-        res.send(JSON.stringify(req.query) + typeof req.query.size + '<br>' + JSON.stringify(result));
+        const data = table.get(options);
+        res.send(buildRep({data}));
     });
-    app.get('/get-all', (req, res) => {
-        res.send(table.get({all: true}));
-    });
-
-    // app.get('/:id/aa', (req, res) => {
-    //     res.send('Hello!!!!' + req.params.id);
-    // });
 }

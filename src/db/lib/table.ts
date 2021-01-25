@@ -3,7 +3,7 @@ import Lowdb from 'lowdb';
 import {IDataItem, ITable} from 'src/types/db';
 import {Json} from 'src/types/common';
 import {nowDateTime} from './utils/time';
-import {CollectionChain, ObjectChain} from 'lodash';
+// import {CollectionChain, ObjectChain} from 'lodash';
 import {IGetOption} from 'src/types/table';
 
 export class Table {
@@ -29,9 +29,9 @@ export class Table {
     private getDateChain () {
         return this.db.get('data');
     }
-    private toCollChain (objChain: ObjectChain<IDataItem>) {
-        return objChain as unknown as CollectionChain<IDataItem>;
-    }
+    // private toCollChain (objChain: ObjectChain<IDataItem>) {
+    //     return objChain as unknown as CollectionChain<IDataItem>;
+    // }
 
     getDB () {
         return this.db;
@@ -66,13 +66,13 @@ export class Table {
 
     get ({
         condition,
-        size = 2,
+        size = 10,
         index = 1,
         all = false
     }: IGetOption) {
         let chain = this.getDateChain();
         if (typeof condition === 'object') {
-            chain = this.toCollChain(chain.find(condition));
+            return chain.find(condition).value();
         }
         if (all) {
             return chain.value();
