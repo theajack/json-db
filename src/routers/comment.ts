@@ -29,7 +29,7 @@ export function initCommentRouter (app: Express, name: string) {
     // app.get(`/comment/${name}`, (req, res) => {
     //     res.send('Hello!!!' + JSON.stringify(table.get({all: true})));
     // });
-    app.post(`/comment/${name}/insert`, (req, res) => {
+    app.post(`/comment/${name}`, (req, res) => {
         const data = req.body;
         const checkRes = checkAttr(data, {
             name: 'string',

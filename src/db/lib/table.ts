@@ -47,7 +47,7 @@ export class Table {
             lastUpdateTime: nowTime
         };
         return this.db.set('id', this.id)
-            .get('data').push(item)
+            .get('data').unshift(item)
             .write();
     }
 
