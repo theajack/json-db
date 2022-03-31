@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev-webpack": "npx webpack --config webpack-config/dev.js --watch &",
-    "dev-nodemon": "npx nodemon dist/dev/backend.js --ignore ./src/db/**/*.json &",
+    "dev-webpack": "npx webpack --config webpack-config/dev.js --watch",
+    "dev-nodemon": "npx nodemon dist/dev/backend.js --ignore ./src/db/**/*.json",
     "dev": "npm run clear && npx concurrently -r \"npm:dev-webpack\" \"npm:dev-nodemon\"",
     "prod": "npx webpack --config webpack-config/prod.js",
     "clear": "node helper/clear-dist-dev.js"

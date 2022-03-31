@@ -70,22 +70,19 @@ export class Table {
         index = 1,
         all = false
     }: IGetOption) {
-        let chain = this.getDateChain();
+        const chain = this.getDateChain();
         if (typeof condition === 'object') {
             return chain.filter(condition).value();
         }
         if (all) {
             return chain.value();
         }
-        const total = size * index;
-        chain = chain.takeRight(total);
         const count = chain.size().value();
-        const pageNum = size - (total - count);
-        if (pageNum > 0) {
-            return chain.slice(0, pageNum);
-        } else {
+        const start = size * (index - 1);
+        if (start >= count) {
             return [];
         }
+        return chain.slice(start, Math.min(start + size, count));
     }
 
     getTable () {

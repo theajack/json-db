@@ -26,8 +26,13 @@ export function initCommentRouter (app: Express, name: string) {
     if (table === null) {
         return;
     }
-    // app.get(`/comment/${name}`, (req, res) => {
-    //     res.send('Hello!!!' + JSON.stringify(table.get({all: true})));
+    // app.get(`/comment/insert/${name}`, (req, res) => {
+    //     table.insert({
+    //         name: 'test',
+    //         contact: req.query.content,
+    //         content: 'test'
+    //     });
+    //     res.send(buildRep({}));
     // });
     app.post(`/comment/${name}`, (req, res) => {
         const data = req.body;
@@ -55,9 +60,11 @@ export function initCommentRouter (app: Express, name: string) {
     // });
     app.get(`/comment/${name}`, (req, res) => {
         const query = req.query;
+        // console.log(query);
         const options: IGetOption = {};
-        if (query.all) { options.all = query.all === '1'; }
-        else {
+        if (query.all === 'true') {
+            options.all = true;
+        } else {
             if (query.size) { options.size = parseInt(query.size as string); }
             if (query.index) { options.index = parseInt(query.index as string); }
         }
