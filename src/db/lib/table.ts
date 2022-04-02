@@ -1,23 +1,17 @@
 import {initTable} from './db';
 import Lowdb from 'lowdb';
-import {IDataItem, ITable} from 'src/types/db';
-import {Json} from 'src/types/common';
+import {IDataItem, ITable} from '../../types/db';
+import {Json} from '../../types/common';
 import {nowDateTime} from './utils/time';
-// import {CollectionChain, ObjectChain} from 'lodash';
-import {IGetOption} from 'src/types/table';
+import {IGetOption} from '../../types/table';
 
 export class Table {
     private db: Lowdb.LowdbSync<ITable>;
     private id: number;
-    type: string;
     name: string;
-    constructor (type: string, name: string) {
-        this.type = type;
+    constructor ( name: string) {
         this.name = name;
-        const result = initTable(type, name);
-        if (result === null) {
-            return;
-        }
+        const result = initTable(name);
         this.db = result;
         this.initIndex();
     }

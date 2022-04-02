@@ -1,10 +1,9 @@
-
+import {Express} from 'express';
 
 export interface ITables {
     [prop: string]: {
-        [prop: string]: {
-            file: string;
-        }
+        file: string;
+        init(app: Express, name: string): void;
     }
 }
 

@@ -1,17 +1,11 @@
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
-import {ITable} from 'src/types/db';
-import {tables} from './tables';
+import {ITable} from '../../types/db';
 import {nowDateTime} from './utils/time';
 
-
-export function initTable (type: string, name: string) {
-    if (!tables[type] || !tables[type][name]) {
-        console.log(`不存在的表：${name}`);
-        return null;
-    }
-    const tableConfig = tables[type][name];
-    const adapter = new FileSync<ITable>(tableConfig.file);
+export function initTable (name: string) {
+    const filePath = `src/db/files/${name}.json`;
+    const adapter = new FileSync<ITable>(filePath);
     const db = low(adapter);
     db.defaults(writeDefaultJson(name))
         .write();

@@ -1,25 +1,25 @@
-import {tables} from './tables';
 import {Table} from './table';
-import {Json} from 'src/types/common';
+import {Json} from '../../types/common';
+import {Comment} from './comment-table';
 
-const db: Json<Json<Table>> = {
+const db: Json<Table> = {
 };
 
-export function getTable (type: string, name: string) {
-    if (db[type] && db[type][name]) {
-        return db[type][name];
+export function getTable (name: string) {
+    if (db[name]) {
+        return db[name];
     }
-    if (!tables[type] || !tables[type][name]) {
-        return null;
-    }
-    if (!db[type]) {
-        db[type] = {};
-    }
-    const table = new Table(type, name);
-    if (!table.getDB()) {
-        return null;
-    }
-    db[type][name] = table;
+    const table = new Table(name);
+    db[name] = table;
     return table;
 }
+const commentDb: Json<Comment> = {
+};
 
+export function getCommentTable (name: string) {
+    if (commentDb[name]) {
+        return commentDb[name];
+    }
+    const table = getTable(name);
+    return new Comment(table);
+}

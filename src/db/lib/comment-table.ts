@@ -2,13 +2,14 @@
  * @Author: tackchen
  * @Date: 2022-04-01 11:28:41
  * @LastEditors: tackchen
- * @LastEditTime: 2022-04-01 12:03:51
+ * @LastEditTime: 2022-04-02 17:53:43
  * @FilePath: /json-db/src/db/lib/comment-table.ts
  * @Description: Coding something
  */
 
-import {IGetOption} from 'src/types/table';
+import {IGetOption} from '../../types/table';
 import {Table} from './table';
+import {handleParamCheck, returnError, returnSuccess} from './utils/request';
 import {nowDateTime} from './utils/time';
 import {parseJSON} from './utils/util';
 
@@ -19,6 +20,13 @@ interface IComment {
 }
 interface IReply extends IComment {
     commentId: number;
+}
+
+interface IQueryOptions {
+    all: string,
+    size: string,
+    index: string,
+    condition: string,
 }
 
 export class Comment {
@@ -61,12 +69,7 @@ export class Comment {
         return true;
     }
 
-    get (query: {
-        all: string,
-        size: string,
-        index: string,
-        condition: string,
-    }) {
+    get (query: IQueryOptions) {
         const options: IGetOption = {};
         if (query.all === 'true') {
             options.all = true;
@@ -78,5 +81,38 @@ export class Comment {
             options.condition = parseJSON(query.condition);
         }
         return this.table.get(options);
+    }
+
+    httpInsert (res: any, data: IComment) {
+        if (!handleParamCheck(res, data, {
+            name: 'string',
+            contact: 'string',
+            content: 'string',
+        })) {
+            return;
+        }
+        this.add(data);
+        returnSuccess(res);
+    }
+
+    httpGet (res: any, query: IQueryOptions) {
+        const data = this.get(query);
+        returnSuccess(res, data);
+    }
+
+    httpInsertReply (res: any, data: IReply) {
+
+        if (!handleParamCheck(res, data, {
+            name: 'string',
+            contact: 'string',
+            content: 'string',
+            commentId: 'number',
+        })) {
+            return;
+        }
+        
+        const result = this.addReply(data);
+        console.log(result);
+        result ? returnSuccess(res) : returnError(res, '评论不存在');
     }
 }
