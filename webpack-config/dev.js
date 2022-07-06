@@ -4,6 +4,7 @@ const path = require('path');
 const webpack = require('webpack');
 // require('../helper/clear-dist-dev');
 module.exports = {
+    mode: 'development',
     entry: [
         'webpack/hot/poll?1000',
         path.resolve('./', 'src/server.ts'),
@@ -16,6 +17,9 @@ module.exports = {
     target: 'async-node',
     plugins: [
     /* HMR plugin */
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development')
+        }),
         new webpack.HotModuleReplacementPlugin(),
 
         /* 当 HMR 替换时在浏览器控制台输出对用户更友好的模块名字信息 */

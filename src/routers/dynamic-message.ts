@@ -1,8 +1,8 @@
 /*
  * @Author: tackchen
  * @Date: 2022-04-02 16:58:44
- * @LastEditors: tackchen
- * @LastEditTime: 2022-04-02 17:55:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-07-07 00:45:48
  * @FilePath: /json-db/src/routers/dynamic-message.ts
  * @Description: Coding something
  */
@@ -26,27 +26,31 @@ export function initDynamicMessageRouter (app: Express) {
     getMessage(app);
     insertReply(app);
 
-    // initDebugRouter(app);
+    console.log(process.env.NODE_ENV);
+    if(process.env.NODE_ENV === 'development') {
+        initDebugRouter(app);
+    }
 }
 
-// function initDebugRouter (app: Express) {
-//     const comment = getCommentTable('test2');
-//     app.get(`/message/insert`, (req, res) => {
-//         comment.httpInsert(res, {
-//             name: 'test',
-//             contact: 'test',
-//             content: 'test'
-//         });
-//     });
-//     app.get(`/message/reply`, (req, res) => {
-//         comment.httpInsertReply(res, {
-//             name: 'test',
-//             contact: 'test',
-//             content: 'test',
-//             commentId: 1,
-//         });
-//     });
-// }
+function initDebugRouter (app: Express) {
+    const appName = 'test2/test3/test4/aaa';
+    const comment = getCommentTable(appName);
+    app.get(`/message/insert`, (req, res) => {
+        comment.httpInsert(res, {
+            name: 'test',
+            contact: 'test',
+            content: 'test'
+        });
+    });
+    app.get(`/message/reply`, (req, res) => {
+        comment.httpInsertReply(res, {
+            name: 'test',
+            contact: 'test',
+            content: 'test',
+            commentId: 1,
+        });
+    });
+}
 
 function insertMessage (app: Express) {
     app.post(`/message`, (req, res) => {
