@@ -7,7 +7,7 @@ import makedir from 'make-dir';
 
 export function initTable (name: string) {
     const filePath = `src/db/files/${name}.json`;
-    const dir = filePath.substring(0, filePath.lastIndexOf('/')+1);
+    const dir = filePath.substring(0, filePath.lastIndexOf('/') + 1);
     console.log(dir);
     makedir.sync(dir);
 

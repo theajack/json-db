@@ -2,7 +2,7 @@
  * @Author: tackchen
  * @Date: 2022-04-02 16:58:44
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-07 00:45:48
+ * @LastEditTime: 2022-07-08 07:32:58
  * @FilePath: /json-db/src/routers/dynamic-message.ts
  * @Description: Coding something
  */
@@ -27,7 +27,7 @@ export function initDynamicMessageRouter (app: Express) {
     insertReply(app);
 
     console.log(process.env.NODE_ENV);
-    if(process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development') {
         initDebugRouter(app);
     }
 }
@@ -58,6 +58,7 @@ function insertMessage (app: Express) {
         
         const comment = buildComment(res, data);
         if (comment) {
+            delete data.app; // ! 去除app字段 减少冗余
             comment.httpInsert(res, data);
         }
     });
@@ -69,6 +70,7 @@ function insertReply (app: Express) {
         
         const comment = buildComment(res, data);
         if (comment) {
+            delete data.app; // ! 去除app字段 减少冗余
             comment.httpInsertReply(res, data);
         }
     });

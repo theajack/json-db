@@ -1,8 +1,8 @@
 /*
  * @Author: tackchen
  * @Date: 2022-04-01 11:28:41
- * @LastEditors: tackchen
- * @LastEditTime: 2022-04-02 17:53:43
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-07-08 07:31:09
  * @FilePath: /json-db/src/db/lib/comment-table.ts
  * @Description: Coding something
  */
@@ -112,7 +112,6 @@ export class Comment {
         }
         
         const result = this.addReply(data);
-        console.log(result);
         result ? returnSuccess(res) : returnError(res, '评论不存在');
     }
 }
