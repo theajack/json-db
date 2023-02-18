@@ -2,7 +2,7 @@
  * @Author: tackchen
  * @Date: 2022-04-02 16:58:44
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-08 07:32:58
+ * @LastEditTime: 2023-02-19 00:56:40
  * @FilePath: /json-db/src/routers/dynamic-message.ts
  * @Description: Coding something
  */
@@ -18,6 +18,10 @@ function buildComment (res: any, data: Json) {
         returnError(res, '缺少 app参数');
         return null;
     }
+    // if (!/^[0-9_a-zA-Z\/\-]+$/.test(app)) {
+    //     returnError(res, '服务器内部错误[code=-1]');
+    //     return null;
+    // }
     return getCommentTable(app);
 }
 
@@ -55,7 +59,7 @@ function initDebugRouter (app: Express) {
 function insertMessage (app: Express) {
     app.post(`/message`, (req, res) => {
         const data = req.body;
-        
+
         const comment = buildComment(res, data);
         if (comment) {
             delete data.app; // ! 去除app字段 减少冗余
@@ -80,6 +84,10 @@ function insertReply (app: Express) {
 function getMessage (app: Express) {
     app.get(`/message`, (req, res) => {
         const query = req.query;
+        // if (!/^[0-9_a-zA-Z\/\-]+$/.test((query as any).app)) {
+        //     returnSuccess(res, [], 'empty');
+        //     return null;
+        // }
         const comment = buildComment(res, query);
         if (comment) {
             comment.httpGet(res, query as any);
