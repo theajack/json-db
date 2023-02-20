@@ -1,106 +1,82 @@
 /*
  * @Author: chenzhongsheng
- * @Date: 2023-02-18 15:58:26
+ * @Date: 2023-02-18 16:58:15
  * @Description: Coding something
  */
-import makedir from 'make-dir';
-import {BASE_DIR, now} from './utils';
-import fs from 'fs';
+import {SyncFile, IFileTemplate} from './sync-file';
+import {IOprateReturn} from './type';
 
-export interface IFileTemplate {
-    key: string,
-    data: any[], // 数据集
-    id: number, // 索引
-    count: number, // 数据大小
-    lastUpdateTime: number, // 上次更新时间
-    createTime: number
-}
+export class File extends SyncFile {
 
-export function extractKey (path: string) {
-    return path.substring(BASE_DIR.length, path.length - 5);
-}
+    template: IFileTemplate|null;
 
-export function keyToPath (key: string): string {
-    return `${BASE_DIR}${key}.json`;
-}
+    opratingCount = 0;
 
-// 同步模块
-export class File {
-
-    path: string;
-
-    dir: string;
-
-    key: string;
-
-    isDirExist: boolean;
-    isFileExist: boolean;
-
-    constructor (key: string) {
-        this.key = key;
-        this.path = keyToPath(key);
-        // this.path = path;
-        // this.key = extractKey(path);
-        this.dir = this.path.substring(0, this.path.lastIndexOf('/') + 1);
-        this.isDirExist = fs.existsSync(this.dir);
-        this.isFileExist = this.isDirExist && fs.existsSync(this.path);
-    }
+    isReading = false;
 
     read (): IFileTemplate {
-        if (!this.isFileExist)
-            return this.generateDefaultData();
-        try {
-            const content = fs.readFileSync(this.path, 'utf8');
-            const result = JSON.parse(content);
-            console.log('read content', content.length, Object.keys(result).length);
-            return result;
-        } catch (e) {
-            return this.generateDefaultData();
+        if (this.template) return this.template;
+        this.isReading = true;
+        const template = this.readPure();
+        this.template = template;
+        this.isReading = false;
+        return template;
+    }
+
+    write (template?: IFileTemplate): boolean {
+        const data = template || this.template;
+        if (!data) return false;
+        const result = this.writePure(data);
+        if (result) {
+            if (!template && this.opratingCount <= 0) {
+                // console.log(`【debug 】 this.template = null ${this.opratingCount}`);
+                this.template = null;
+            } // 释放内存
+            return true;
         }
+        return false;
     }
-
-    generateId (data: IFileTemplate) {
-        return ++ data.id;
-    }
-
-    generateDefaultData (data: any[] = []): IFileTemplate {
-        const time = now();
-        return {
-            key: this.key,
-            data, // 数据集
-            id: 0, // 索引
-            count: 0, // 数据大小
-            lastUpdateTime: time, // 上次更新时间
-            createTime: time
-        };
-    }
-
-    private updateInfo (data: IFileTemplate) {
-        data.lastUpdateTime = now();
-        data.count = data.data.length;
-    }
-
-    write (data: IFileTemplate) {
-        if (!this.isDirExist) {
-            makedir(this.dir);
-            this.isDirExist = true;
-        }
-        this.updateInfo(data);
+    
+    async oprate (
+        handleData: (data: any[], geneId: () => number) => Promise<any[]>|any[],
+    ): Promise<boolean> {
         try {
-            fs.writeFileSync(this.path, JSON.stringify(data, null, 2), 'utf8');
+            this.opratingCount ++;
+            const template = this.read();
+            // console.log(`【debug 】 asyncRead ${!!template}`);
+            let data = handleData(template.data, () => this.generateId(template));
+            if (data instanceof Promise) {
+                data = await data;
+            }
+
+            if (data instanceof Array) template.data = data;
+            this.opratingCount --;
+            // console.log(`【debug 】 opratingCount-- ${this.opratingCount}`);
+
+            if (this.opratingCount > 0) return true;
+            return this.write();
         } catch (e) {
+            this.opratingCount --;
             return false;
         }
-        if (!this.isFileExist) this.isFileExist = true;
-        return true;
     }
 
-    oprate (
-        handleData: (data: any[], geneId: (data: IFileTemplate) => number) => any[]
-    ) {
+    oprateCustom (): IOprateReturn {
+        
+        this.opratingCount ++;
         const template = this.read();
-        template.data = handleData(template.data, () => this.generateId(template));
-        return this.write(template);
-    }
 
+        return {
+            data: template.data,
+            save: (data?: any[]) => {
+                if (data instanceof Array) template.data = data;
+                this.opratingCount --;
+                // console.log(`【debug 】 opratingCount-- ${this.opratingCount}`);
+                if (this.opratingCount > 0) return true;
+                return this.write();
+            },
+            error: () => {this.opratingCount --;},
+            id: () => this.generateId(template),
+        };
+    }
 }

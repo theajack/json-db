@@ -5,6 +5,8 @@
  */
 
 import {FileManager} from './file-manage';
+import {Server} from './server/server';
+import {IFrameWorkOptions} from './type';
 
 // const framework = new FrameWork({
 //     'get:/aa/bb': (data, tables) => {
@@ -23,7 +25,22 @@ export class FrameWork {
     
     fileManager: FileManager;
 
-    constructor () {
+    server: Server;
+
+    constructor ({
+        port,
+        routers,
+    }: IFrameWorkOptions) {
         this.fileManager = new FileManager();
+        this.server = new Server({
+            port,
+            routers,
+            helper: {
+                file: (name: string) => this.fileManager.file(name),
+                oprate: (name: string) => {
+                    return this.fileManager.file(name).oprateCustom();
+                }
+            }
+        });
     }
 }

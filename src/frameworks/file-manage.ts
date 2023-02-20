@@ -3,13 +3,13 @@
  * @Date: 2023-02-18 17:19:03
  * @Description: Coding something
  */
-import {AsyncFile} from './async-file';
 import fs from 'fs';
 import {BASE_DIR} from './utils';
-import {extractKey} from './file';
+import {extractKey} from './sync-file';
+import {File} from './file';
 
 export class FileManager {
-    private files: Record<string, AsyncFile> = {};
+    private files: Record<string, File> = {};
 
     constructor () {
 
@@ -19,14 +19,14 @@ export class FileManager {
 
         traverse(BASE_DIR, path => {
             const key = extractKey(path);
-            this.files[key] = new AsyncFile(key);
+            this.files[key] = new File(key);
         });
     }
 
     file (key: string) {
         console.log(!!this.files[key]);
         if (!this.files[key]) {
-            this.files[key] = new AsyncFile(key);
+            this.files[key] = new File(key);
         }
         return this.files[key];
     }
