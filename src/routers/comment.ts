@@ -1,7 +1,16 @@
+/*
+ * @Author: chenzhongsheng
+ * @Date: 2023-02-18 14:34:19
+ * @Description: Coding something
+ */
 
 import {Express} from 'express';
+import {returnSuccess} from '../db/lib/utils/request';
 import {Comment} from '../db/lib/comment-table';
 import {getCommentTable} from '../db/lib/table-pool';
+import {FrameWork} from '../frameworks/framework';
+import {delay} from '../db/lib/utils/util';
+
 
 export function initCommentRouter (app: Express, name: string) {
     const comment = getCommentTable(name);
@@ -9,6 +18,8 @@ export function initCommentRouter (app: Express, name: string) {
     insertComment(app, comment);
     getComment(app, comment);
     insertReply(app, comment);
+
+    RouteTest(app);
 
     // initDebugRouter(app, comment);
 }
@@ -45,7 +56,37 @@ function insertReply (app: Express, comment: Comment) {
         comment.httpInsertReply(res, data);
     });
 }
+const framework = new FrameWork();
 
+function RouteTest (app: Express) {
+    app.get('/main', async (req, res) => {
+        returnSuccess(res, {query: 11});
+    });
+    app.get('/test', async (req, res) => {
+        const query = req.query;
+
+        const isWait = query.wait === '1';
+
+        const file = framework.fileManager.file('aaa');
+        await file.asyncOprate(async (data, geneId) => {
+            const id = geneId();
+            console.log(`【debug ${isWait}】 asyncRead start`);
+            if (isWait) {
+                await delay(5000);
+            }
+            console.log(`【debug ${isWait}】 asyncRead end`);
+            data.push(id);
+            return data;
+        }, isWait);
+        console.log(`【debug ${isWait}】 asyncRead return`);
+        returnSuccess(res, {query});
+    });
+    app.get('/test2', async (req, res) => {
+        const file = framework.fileManager.file('aaa');
+        returnSuccess(res, {data: file.asyncRead()});
+        
+    });
+}
 
 function getComment (app: Express, comment: Comment) {
     app.get(`/comment/${comment.name}`, (req, res) => {

@@ -1,9 +1,11 @@
 /*
  * @Author: chenzhongsheng
- * @Date: 2023-02-18 14:34:19
+ * @Date: 2023-02-18 16:26:52
  * @Description: Coding something
  */
-import {Json} from '../../../types/common';
+export function now () {
+    return Date.now();
+}
 
 export function random (a: number, b: number) {
     return (a + Math.round(Math.random() * (b - a)));
@@ -27,7 +29,7 @@ export function mapJson (key: any, value: any, fn:(k: any, v: any)=>void) {
         fn(key, value);
     }
 }
-export function parseJSON (data: any): Json {
+export function parseJSON (data: any): Record<string, any>|any[] {
     if (typeof data === 'object') {return data;}
     try {
         return JSON.parse(data);
@@ -39,10 +41,4 @@ export function parseJSON (data: any): Json {
 
 export const IS_DEV = process.env.NODE_ENV === 'development';
 
-export function delay (time: number = 1000) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(null);
-        }, time);
-    });
-}
+export const BASE_DIR = (IS_DEV ? process.cwd() : '') + '/FrameWorkData/';

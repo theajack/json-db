@@ -1,3 +1,8 @@
+/*
+ * @Author: chenzhongsheng
+ * @Date: 2023-02-18 14:34:19
+ * @Description: Coding something
+ */
 import {Json} from 'src/types/common';
 
 export function checkAttr (data: Json, attrs: Json<'number' | 'string' | 'boolean' | 'object'>) {
@@ -35,7 +40,7 @@ export function returnError (res: any, mes: string, code = -1) {
 }
 
 export function returnSuccess (res: any, data: any = null, mes = '') {
-    res.send(buildRep({data, mes}));
+    res.send(buildRep({data, mes, code: 0}));
 }
 
 
@@ -50,3 +55,18 @@ export function handleParamCheck (res: any, data: any, template: any) {
     }
     return true;
 }
+
+// export function handleRequest (handleData: (data: any)=>any) {
+
+
+//     return (req: Request, res: Response) => {
+//         const data = (req.method.toLocaleLowerCase() === 'get') ?
+//             req.query : req.body;
+        
+
+//         const result = handleData(data);
+
+
+//     };
+
+// }

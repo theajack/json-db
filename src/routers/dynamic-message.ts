@@ -2,7 +2,7 @@
  * @Author: tackchen
  * @Date: 2022-04-02 16:58:44
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-08 07:32:58
+ * @LastEditTime: 2023-02-18 15:11:26
  * @FilePath: /json-db/src/routers/dynamic-message.ts
  * @Description: Coding something
  */
@@ -10,7 +10,8 @@
 import {Express} from 'express';
 import {returnError} from '../db/lib/utils/request';
 import {getCommentTable} from '../db/lib/table-pool';
-import {Json} from 'src/types/common';
+import {Json} from '../types/common';
+import {IS_DEV} from '../db/lib/utils/util';
 
 function buildComment (res: any, data: Json) {
     const app = data.app;
@@ -27,7 +28,7 @@ export function initDynamicMessageRouter (app: Express) {
     insertReply(app);
 
     console.log(process.env.NODE_ENV);
-    if (process.env.NODE_ENV === 'development') {
+    if (IS_DEV) {
         initDebugRouter(app);
     }
 }
