@@ -3,41 +3,34 @@
  * @Date: 2023-02-18 14:34:19
  * @Description: Coding something
  */
-import {FrameWork} from './frameworks/framework';
-import {IRouter} from './frameworks/type';
+import express from 'express';
+import bodyParser from 'body-parser';// 用于req.body获取值的
+import {initCommentRouter} from './routers/comment';
+import {initDynamicMessageRouter} from './routers/dynamic-message';
 
-const routers: IRouter = {
-    'get:/aa': ({file}) => {
-        const data = file('aa').read();
-        return {data: data};
-    },
-    'get:/setaa': async ({query, file}) => {
-        const success = await file('aa').oprate((data) => {
-            data.push(query.text);
-            return data;
-        });
-        if (success) {
-            return {data: query.text};
+const NAMES = [
+    'cnchar'
+];
+
+function startServer () {
+    const app = express();
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: false}));
+    
+    const PORT = 3000;
+    
+    NAMES.forEach(name => {
+        initCommentRouter(app, name);
+    });
+
+    initDynamicMessageRouter(app);
+    
+    const server = app.listen(PORT, function () {
+        const address = server.address();
+        if (typeof address === 'object') {
+            console.log('Server is listening at http://%s:%s', address?.address, address?.port);
         }
-        return {data: 'error'};
-    },
-    'post:/setaa': ({body, oprate}) => {
-        // const success = await file('aa').oprate((data, geneId) => {
-        //     body.data.id = geneId();
-        //     data.push(body.data);
-        //     return data;
-        // });
-        // return {success, data: body.data};
-        const {data, save, id} = oprate('aa');
-        id();
-        body.data.id = id();
-        data.push(body.data);
-        save();
-        return {data: body.data};
-    },
-};
+    });
+}
 
-new FrameWork({
-    port: 3000,
-    routers
-});
+startServer();
