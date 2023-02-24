@@ -8,3 +8,5 @@ docs
 vuepress/config.js
 **/*.vue
 **/*.html
+new-src/sener
+new-src/json

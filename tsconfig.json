@@ -17,6 +17,7 @@
         "removeComments": false,
         "jsx": "preserve",
         "lib": ["esnext", "dom"],
+        "downlevelIteration": true,
         "rootDir": "."
     },
     "include": [

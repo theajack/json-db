@@ -1,3 +1,8 @@
+/*
+ * @Author: chenzhongsheng
+ * @Date: 2023-02-18 14:34:19
+ * @Description: Coding something
+ */
 // const MyPlugin = require('./plugin/plugin1')
 // const ErudaWebapckPlugin = require('eruda-webpack-plugin')
 const path = require('path');
@@ -7,7 +12,7 @@ module.exports = {
     mode: 'development',
     entry: [
         'webpack/hot/poll?1000',
-        path.resolve('./', 'src/server.ts'),
+        path.resolve('./', 'src/index.ts'),
     ],
     output: {
         path: path.resolve('./', 'dist/dev'),
