@@ -3,8 +3,8 @@
  * @Date: 2023-02-22 09:16:23
  * @Description: Coding something
  */
-import {Sener} from './sener';
-import {Json} from './json';
+import {Sener} from 'sener';
+import {Json} from 'sener-json';
 import {router} from './router';
 
 new Sener({

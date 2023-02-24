@@ -1,3 +1,8 @@
+/*
+ * @Author: chenzhongsheng
+ * @Date: 2023-02-18 14:34:19
+ * @Description: Coding something
+ */
 const path = require('path');
 const fs = require('fs');
 const nodeModules = {};
@@ -13,7 +18,7 @@ fs.readdirSync('node_modules')
 module.exports = {
     mode: 'production',
     entry: [
-        path.resolve('./', 'src/server.ts')
+        path.resolve('./', 'src/index.ts')
     ],
     output: {
         filename: 'bundle.js',

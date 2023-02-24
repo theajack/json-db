@@ -12,7 +12,7 @@ module.exports = {
     mode: 'development',
     entry: [
         'webpack/hot/poll?1000',
-        path.resolve('./', 'new-src/index.ts'),
+        path.resolve('./', 'src/index.ts'),
     ],
     output: {
         path: path.resolve('./', 'dist/dev'),

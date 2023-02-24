@@ -21,9 +21,8 @@ specifiers:
   make-dir: ^3.1.0
   nodemon: ^2.0.7
   npm-run-all: ^4.1.5
-  sener: 0.0.6
-  sener-json: 0.0.6
-  sener-types: ^0.0.6
+  sener: 0.0.9
+  sener-json: 0.0.9
   ts-loader: ^8.0.14
   typescript: ^4.1.3
   webpack: ^5.17.0
@@ -50,9 +49,8 @@ devDependencies:
   make-dir: 3.1.0
   nodemon: 2.0.20
   npm-run-all: 4.1.5
-  sener: 0.0.6
-  sener-json: 0.0.6
-  sener-types: 0.0.6
+  sener: 0.0.9
+  sener-json: 0.0.9
   ts-loader: 8.4.0_hhrrucqyg4eysmfpujvov2ym5u
   typescript: 4.9.5
   webpack: 5.75.0_webpack-cli@4.10.0
@@ -4377,21 +4375,20 @@ packages:
       - supports-color
     dev: true
 
-  /sener-json/0.0.6:
-    resolution: {integrity: sha512-4En5um2REjWGBMqSC6rNYdeWvF61gQbd2tVJOPWON2LlIU2KMQQh8nMzkbwLh6tDjsg+i6+jWnUZD7734zYZDg==}
+  /sener-json/0.0.9:
+    resolution: {integrity: sha512-Gz1pGsvcqPkWAG3nkg+JGY/UIqVuEk+bES1Osz3om9d888ese+LFeOqQvT9dTUmeT2VO73vkOhJi7RwDqSgG3g==}
     dependencies:
-      sener-types: 0.0.6
+      sener-types: 0.0.9
     dev: true
 
-  /sener-types/0.0.6:
-    resolution: {integrity: sha512-D//dFSFakkR0HThWYn3WeJNEmFFeEO5rBnU82XxcRiTK304fotXMDyxN1oT25Ej5u5Q4Xu2e+5LI++DoF/1jRg==}
+  /sener-types/0.0.9:
+    resolution: {integrity: sha512-+R5dISUKX7V4mj77Q6osRrqwhCJks8eCTcEtg8HuTCci86t2NnyCt8izYizg2iHVy1HEgODCGVjKIE9f1XFlLw==}
     dev: true
 
-  /sener/0.0.6:
-    resolution: {integrity: sha512-sQEiFvSe3dRBhTsq3wqzfBQPiTrpnIP25vMbmYjuxcuQjvXCrVTxSGr6bYZbnU6naeVeHWb9M8hjKc6tCChJ6w==}
+  /sener/0.0.9:
+    resolution: {integrity: sha512-XB5yugYu31jwBJtpZxHGKeCKYVQ0GNNsztJoPuASMTHsWQ9CVMaXT6sAmwScNowOXGxI5BTHJGnPF01c510Jkw==}
     dependencies:
-      sener-types: 0.0.6
-      undefined: 0.1.0
+      sener-types: 0.0.9
     dev: true
 
   /serialize-javascript/6.0.1:
@@ -4857,11 +4854,6 @@ packages:
       has-bigints: 1.0.2
       has-symbols: 1.0.3
       which-boxed-primitive: 1.0.2
-    dev: true
-
-  /undefined/0.1.0:
-    resolution: {integrity: sha512-NkvZ+cpfGNrQvaCMPr2DytKuQfUTTUUloyqxhjLIzUm6OIBBgjH0zUIObsDejlvNHXBmXNCEt4IOFE6HB+ourA==}
-    deprecated: this package has been deprecated
     dev: true
 
   /undefsafe/2.0.5:
