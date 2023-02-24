@@ -1,3 +1,8 @@
+/*
+ * @Author: chenzhongsheng
+ * @Date: 2023-02-24 22:02:51
+ * @Description: Coding something
+ */
 const path = require('path');
 const fs = require('fs');
 const nodeModules = {};
@@ -21,7 +26,7 @@ module.exports = {
     },
     /* 告知 webpack 为 node 服务，并忽略 externals 中的模块 */
     target: 'node',
-    externals: nodeModules,
+    // externals: nodeModules,
 
     /* __dirname 和 __filename 指向原始地址 */
     context: __dirname,
